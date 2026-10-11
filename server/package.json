@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "test": "node --test test/**/*.test.js",
+    "check": "node --check src/server.js && node --check src/app.js && node --check src/config/env.js && node --check src/config/database.js && node --check src/models/User.js && node --check src/models/Consultation.js && node --check src/controllers/authController.js && node --check src/controllers/userController.js && node --check src/controllers/consultationController.js && node --check src/services/passwordService.js && node --check src/services/tokenService.js && node --check src/routes/authRoutes.js && node --check src/routes/healthRoutes.js && node --check src/routes/demoRoutes.js && node --check src/routes/userRoutes.js && node --check src/routes/consultationRoutes.js && node --check src/routes/protectedRoutes.js && node --check src/middleware/notFound.js && node --check src/middleware/errorHandler.js && node --check src/middleware/authenticate.js && node --check src/middleware/authorize.js && node --check src/config/redis.js && node --check src/controllers/guestController.js && node --check src/models/Message.js && node --check src/models/GuestProfile.js && node --check src/routes/guestRoutes.js && node --check src/middleware/rateLimiter.js && node --check src/sockets/socketHandler.js && node --check src/sockets/messageHandler.js && node --check src/sockets/presenceHandler.js && node --check src/workers/cleanupWorker.js",
+    "seed:admin": "node scripts/seedAdmin.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "ioredis": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^9.10.0",
+    "socket.io": "^4.8.3"
+  }
+}

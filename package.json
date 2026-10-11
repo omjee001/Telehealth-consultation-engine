@@ -1,0 +1,20 @@
+{
+  "name": "telehealth-realtime-consultation-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Educational telehealth and real-time consultation engine.",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev:client": "npm run dev --workspace=client",
+    "dev:server": "npm run dev --workspace=server",
+    "start:server": "npm run start --workspace=server",
+    "test:server": "npm run test --workspace=server",
+    "check": "npm run check --workspace=client && npm run check --workspace=server"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,71 @@
+# Phase 17 — Docker Compose
+#
+# WHAT IS DOCKER?
+# Docker packages applications into "containers" — isolated environments
+# that include everything needed to run: code, runtime, libraries, config.
+#
+# KEY CONCEPTS:
+#   Image:     a blueprint/recipe for creating a container
+#   Container: a running instance of an image (like a lightweight VM)
+#   Port:      the network door used to reach a service (e.g. 5000 for our API)
+#   Service:   a container definition in docker-compose (e.g. "backend", "mongodb")
+#   Network:   Docker creates a private network so services can talk to each other
+#   Volume:    persistent storage that survives container restarts
+#
+# This file defines all services needed to run the telehealth application locally.
+
+services:
+  # ── MongoDB ──
+  mongodb:
+    image: mongo:7
+    container_name: telehealth-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+
+  # ── Redis ──
+  redis:
+    image: redis:7-alpine
+    container_name: telehealth-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # ── Backend API ──
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: telehealth-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongodb:27017/telehealth_engine
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET:-change-this-to-a-long-random-secret}
+      - JWT_EXPIRES_IN=1h
+      - GUEST_JWT_EXPIRES_IN=15m
+      - CLIENT_URL=http://localhost:5173
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+
+  # ── Frontend ──
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: telehealth-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
